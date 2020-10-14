@@ -1,0 +1,45 @@
+
+spring:
+  application:
+    name: user-center
+  datasource:
+    url: jdbc:mysql://101.200.82.237:3306/user_center?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+    username: root
+    password: abc.123
+    hikari:
+      max-lifetime: 30000
+      minimum-idle: 1
+      maximum-pool-size: 20
+      auto-commit: true
+      idle-timeout: 10000
+      connection-timeout: 30000
+    type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+
+  cloud:
+    nacos:
+      discovery:
+#        server-addr: 101.200.82.237:8848
+        server-addr: localhost:8848
+#        namespace: a2b425a7-92b5-494a-941f-bbfab80e9959
+        metadata:
+          instance: cc
+          version: 1.0
+server:
+  port: 8083
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: always
+
+rocketmq:
+  name-server: 123.57.200.135:9876
+
+jwt:
+  secret: aaaaaaabbbbbbcccccdddddaaaaaaabbbbbbcccccdddddaaaaaaabbbbbbcccccddddd
+  expire-time-in-second: 1209600

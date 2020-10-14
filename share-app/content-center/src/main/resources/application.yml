@@ -1,0 +1,74 @@
+spring:
+  application:
+    name: content-center
+  main:
+    allow-bean-definition-overriding: true
+  datasource:
+    url: jdbc:mysql://101.200.82.237:3306/content_center?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+    username: root
+    password: abc.123
+    hikari:
+      max-lifetime: 30000
+      minimum-idle: 1
+      maximum-pool-size: 20
+      auto-commit: true
+      idle-timeout: 10000
+      connection-timeout: 30000
+    type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  cloud:
+    nacos:
+      discovery:
+#        server-addr: 101.200.82.237:8848
+        server-addr: localhost:8848
+#        namespace: a2b425a7-92b5-494a-941f-bbfab80e9959
+    sentinel:
+      transport:
+        dashboard: localhost:8080
+
+server:
+  port: 8081
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: always
+
+user-center:
+  ribbon:
+    NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RandomRule
+
+ribbon:
+  eager-load:
+    clients: user-center
+    enabled: true
+logging:
+  level:
+    com.soft1851.springboot.contentcenter.figinclient.UserCenterFeignClient: debug
+
+feign:
+  sentinel:
+    enabled: true
+  client:
+    config:
+      default:
+        loggerLevel: full
+        requestInterceptors:
+          - com.soft1851.springboot.contentcenter.figinclient.interceptor.TokenInterceptor
+  httpclient:
+    enable: true
+    max-connections: 200
+    max-connections-per-route: 50
+rocketmq:
+  name-server: 123.57.200.135:9876
+  producer:
+    group: test-group
+
+jwt:
+  secret: aaaaaaabbbbbbcccccdddddaaaaaaabbbbbbcccccdddddaaaaaaabbbbbbcccccddddd
+  expire-time-in-second: 1209600
